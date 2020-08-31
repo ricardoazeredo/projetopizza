@@ -1,4 +1,4 @@
-let modalQtd = 2;
+let modalQtd = 1;
 
 //encurtando comandos querySelector e querySelectorAll. 
 const query = (element)=>document.querySelector(element);
@@ -53,4 +53,23 @@ function closeModal(){
 
 queryAll('.pizzaInfo--cancelButton, .pizzaInfo--cancelMobileButton').forEach((item)=>{
    item.addEventListener('click', closeModal);
+});
+
+query('.pizzaInfo--qtmenos').addEventListener('click',()=>{  
+  if(modalQtd > 1) modalQtd--;
+  query('.pizzaInfo--qt').innerHTML = modalQtd;
+});
+
+query('.pizzaInfo--qtmais').addEventListener('click',()=>{
+   modalQtd++;
+   query('.pizzaInfo--qt').innerHTML = modalQtd;
+});
+
+queryAll('.pizzaInfo--size').forEach((size,sizeIndex)=>{      
+   size.addEventListener('click', (event)=>{
+      //remove a seleção
+      query('.pizzaInfo--size.selected').classList.remove('selected');
+      //marca o item clicado
+      size.classList.add('selected');
+   });
 });

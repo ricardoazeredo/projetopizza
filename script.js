@@ -1,4 +1,6 @@
+let cart = [];
 let modalQtd = 1;
+let modalKey = 0;
 
 //encurtando comandos querySelector e querySelectorAll. 
 const query = (element)=>document.querySelector(element);
@@ -19,6 +21,8 @@ pizzaJson.map((item, index)=>{
       e.preventDefault();
       let key = e.target.closest('.pizza-item').getAttribute('data-key');
       modalQtd = 1;
+      modalKey = key;
+
       query('.pizzaBig img').src = pizzaJson[key].img;
       query('.pizzaInfo h1').innerHTML = pizzaJson[key].name;
       query('.pizzaInfo--desc').innerHTML = pizzaJson[key].description;
@@ -68,8 +72,57 @@ query('.pizzaInfo--qtmais').addEventListener('click',()=>{
 queryAll('.pizzaInfo--size').forEach((size,sizeIndex)=>{      
    size.addEventListener('click', (event)=>{
       //remove a seleção
-      query('.pizzaInfo--size.selected').classList.remove('selected');
+      query('.pizzaInfo--size.selected').classList.remove('selected');      
       //marca o item clicado
-      size.classList.add('selected');
+      size.classList.add('selected');     
    });
 });
+
+query('.pizzaInfo--addButton').addEventListener('click', ()=>{
+   let size = parseInt(query('.pizzaInfo--size.selected').getAttribute('data-key'));
+   let identifier = pizzaJson[modalKey].id+'@'+size;
+   let key = cart.findIndex((item)=>item.identifier == identifier);
+   if(key > -1){
+      cart[key].qt += modalQtd;   
+   }else{
+      cart.push({
+         identifier,
+         id:pizzaJson[modalKey].id,
+         size,
+         qt:modalQtd
+      });
+
+   }  
+   updateCart();
+   closeModal();
+});
+
+function updateCart(){
+   if(cart.length > 0){
+      query('aside').classList.add('show');
+      query('.cart').innerHTML = '';
+      for(let i in cart){
+         let pizzaItem = pizzaJson.find((item)=> item.id == cart[i].id);
+         let cartItem = query('.models .cart--item').cloneNode(true);
+         let pizzaSizeName;
+         switch(cart[i].size){
+            case 0:
+               pizzaSizeName = 'P';
+               break;
+            case 1: 
+               pizzaSizeName = 'M';
+               break;
+            case 2:
+               pizzaSizeName = 'G';
+               break;                     
+         }
+         let pizzaName = `${pizzaItem.name} (${pizzaSizeName})`
+         cartItem.querySelector('img').src = pizzaItem.img;
+         cartItem.querySelector('.cart--item-nome').innerHTML = pizzaName;
+         query('.cart').append(cartItem);
+         
+      }
+   }else{
+      query('aside').classList.remove('show');
+   }
+}

@@ -198,6 +198,7 @@ h1 {
 .pizzaInfo--size.selected {
     background-color:#399ade;
     color:#FFF;
+    transition: auto ease .5s;
 }
 .pizzaInfo--size.selected span {
     color:#D6D6D6;

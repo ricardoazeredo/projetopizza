@@ -97,7 +97,16 @@ query('.pizzaInfo--addButton').addEventListener('click', ()=>{
    closeModal();
 });
 
+query('.menu-openner span').addEventListener('click',()=>{
+   if(cart.length > 0) query('aside').style.left = '0';
+});
+
+query('.menu-closer').addEventListener('click',()=>{
+   query('aside').style.left = '100vw';
+});
+
 function updateCart(){
+   query('.menu-openner span').innerHTML =cart.length;
    if(cart.length > 0){
       query('aside').classList.add('show');
       query('.cart').innerHTML = '';
@@ -148,5 +157,6 @@ function updateCart(){
       query('.total span:last-child').innerHTML = `R$ ${total.toFixed(2)}`;
    }else{
       query('aside').classList.remove('show');
+      query('aside').style.left = '100vw';
    }
 }

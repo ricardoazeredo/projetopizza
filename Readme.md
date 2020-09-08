@@ -1,0 +1,1 @@
+Projeto educacional de e-commerce de Pizzaria do curso de JavaScript da B7web.
